@@ -11,8 +11,8 @@ import (
 type Browser struct {
 	// Browser name e.g. firefox or google-chrome-stable.
 	Name string
-	// Name of current workspace for browser.
-	Workspace string
+	// Name of profile to create.
+	Profile string
 }
 
 func (br *Browser) createDirectory() error {
@@ -29,9 +29,8 @@ func (br *Browser) createDirectory() error {
 
 func (br *Browser) createProfile() error {
 
-	path := br.profilePath()
 	// Example: "JoelUser c:\internet\joelusers-moz-profile"
-	profileNameAndDir := fmt.Sprintf("%s %s", br.Workspace, path)
+	profileNameAndDir := fmt.Sprintf("%s %s", br.Profile, br.profilePath())
 
 	cmd := exec.Command(br.Name, "-CreateProfile", profileNameAndDir)
 	log.Print(cmd)
@@ -56,7 +55,7 @@ func (br *Browser) profileExists() bool {
 
 func (br *Browser) profilePath() string {
 
-	suffix := fmt.Sprintf("%s-%s", br.Name, br.Workspace)
+	suffix := fmt.Sprintf("%s-%s", br.Name, br.Profile)
 	path := filepath.Join(os.Getenv("HOME"), ".config", "browser", suffix)
 
 	return path
