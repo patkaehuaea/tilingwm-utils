@@ -19,7 +19,7 @@ func (br *Browser) createDirectory() error {
 
 	path := br.profilePath()
 	// Only current user can rwx e.g. 0700.
-	if err := os.Mkdir(path, 0700); err != nil {
+	if err := os.MkdirAll(path, 0700); err != nil {
 		log.Fatal(err)
 		return err
 	}
